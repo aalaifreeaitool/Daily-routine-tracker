@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All-in-One Daily Routine & Baby Tracker | Life Organizer App</title>
+    <meta name="description" content="Organize your day with a full scheduler, health & wellness tracker, meal manager, and personal diary. Includes a comprehensive baby tracker for feeding, sleep, diapers, milestones, and more.">
+    <meta name="keywords" content="daily routine, scheduler, tracker, health, wellness, productivity, pomodoro, diary, baby tracker, feeding log, sleep log, parenting app, life organizer">
+    <!-- Add more relevant keywords -->
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        .app-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        h1, h2 {
+            color: #007bff; /* Primary color */
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        h2 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            text-align: left;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+        li strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50; /* Darker text for emphasis */
+            font-size: 1.1em;
+        }
+        button, input, select, textarea {
+            padding: 10px;
+            margin-top: 5px;
+            margin-right: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Important for 100% width */
+            font-size: 1em;
+            width: 100%; /* Default to full width for stacking on mobile */
+            max-width: 350px; /* Limit width on larger screens */
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        input[type="file"] {
+            padding: 3px; /* Files inputs look different */
+        }
+        input[type="range"] {
+            padding: 0;
+            max-width: 200px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s ease-in-out;
+            width: auto; /* Let buttons size to content by default */
+            max-width: 200px; /* Unless specified */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .tabs {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        .tabs button {
+            background-color: #6c757d; /* Secondary button color */
+            margin: 0 5px;
+            padding: 10px 15px;
+        }
+        .tabs button.active {
+            background-color: #007bff;
+            box-shadow: 0 2px 5px rgba(0,123,255,0.3);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .diary-entry {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            margin-top: 10px;
+            background-color: #fff;
+            border-radius: 4px;
+        }
+        .diary-entry img {
+            max-width: 100%; /* Responsive image */
+            height: auto;
+            max-height: 150px;
+            display: block;
+            margin-top: 8px;
+            border-radius: 4px;
+        }
+        #timerDisplay, #babySleepStatus {
+            font-weight: bold;
+            color: #28a745; /* Green for positive status */
+            font-size: 1.2em;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .quote-joke {
+            font-style: italic;
+            color: #555;
+            background-color: #e9f5ff;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            margin-top: 8px;
+            display: block; /* Ensure it takes its own line and space */
+            margin-bottom: 8px;
+            border-radius: 0 4px 4px 0;
+        }
+        #scheduleList p, #diaryEntries .diary-entry, #babyPhotoEntries .diary-entry {
+            word-break: break-word; /* Prevent long unbroken strings from overflowing */
+        }
+
+        /* Mobile Friendliness - Media Queries */
+        @media (max-width: 600px) {
+            body {
+                margin:0; /* Remove body margin on small screens */
+            }
+            .app-container {
+                margin: 0;
+                padding: 15px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            h1 {
+                font-size: 1.6em;
+                margin-bottom: 20px;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            button, input, select, textarea {
+                width: 100%; /* Ensure full width */
+                max-width: 100%; /* Override any larger max-widths */
+                margin-right: 0;
+                margin-bottom: 10px; /* Space between stacked inputs */
+            }
+             .tabs button {
+                width: calc(50% - 10px); /* Two buttons side-by-side */
+                margin-bottom: 5px;
+            }
+            li {
+                padding: 10px;
+            }
+            /* Stack input + button combinations */
+            #adultFeatures li:first-child input[type="text"],
+            #adultFeatures li:first-child input[type="time"] {
+                 margin-bottom: 10px;
+            }
+             #adultFeatures li:first-child button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1>My Life & Baby Hub</h1>
+
+        <div class="tabs">
+            <button id="adultTabBtn" class="active" onclick="showTab('adult')">Adult Routine</button>
+            <button id="babyTabBtn" onclick="showTab('baby')">Baby Tracker</button>
+        </div>
+
+        <!-- Core Daily Routine Features (for Adults) -->
+        <div id="adultFeatures" class="tab-content active">
+            <h2>Core Daily Routine Features (for Adults)</h2>
+            <ul>
+                <li>
+                    <strong>1. Full-Day Scheduler & Tracker</strong>
+                    <input type="text" id="activityInput" placeholder="Enter activity">
+                    <input type="time" id="activityTime">
+                    <button onclick="addActivity()">Add to Schedule</button>
+                    <div id="scheduleList"></div>
+                </li>
+                <li>
+                    <strong>2. Custom Notifications</strong>
+                    <input type="text" id="reminderTask" placeholder="Task for reminder">
+                    <input type="time" id="reminderTime">
+                    <button onclick="setReminder()">Set Reminder</button>
+                    <p><small>(Note: Actual notifications require browser/OS permissions and more complex JS. This is a simulation.)</small></p>
+                </li>
+                <li>
+                    <strong>3. Health & Wellness Tracking</strong>
+                    Happiness Meter (1-5): <input type="range" id="happinessMeter" min="1" max="5" value="3"><br>
+                    Mood: <input type="text" id="moodInput" placeholder="e.g., Calm, Stressed">
+                    <button onclick="logHealth()">Log Health</button><br>
+                    Medicine: <input type="text" id="medicineName" placeholder="Medicine Name">
+                    <button onclick="logMedicine()">Log Medicine Reminder</button><br>
+                    Water Intake (glasses): <input type="number" id="waterIntake" min="0" value="0" style="max-width:100px;">
+                    <button onclick="logWater()">Log Water</button><br>
+                    Sleep (hours): <input type="number" id="sleepHours" min="0" max="24" step="0.5" style="max-width:100px;">
+                    <button onclick="logSleep()">Log Sleep</button>
+                </li>
+                <li>
+                    <strong>4. Meals Manager</strong>
+                    <select id="mealType" style="margin-bottom:10px;">
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Snack">Snack</option>
+                        <option value="Dinner">Dinner</option>
+                    </select>
+                    <input type="text" id="mealItem" placeholder="Food item">
+                    <input type="text" id="mealQuantity" placeholder="Quantity (e.g., 1 bowl)">
+                    <input type="time" id="mealTime">
+                    <button onclick="logMeal()">Log Meal</button>
+                </li>
+                <li>
+                    <strong>5. Personal Diary</strong>
+                    <textarea id="diaryText" placeholder="Your thoughts for the day..."></textarea><br>
+                    Photo: <input type="file" id="diaryPhoto" accept="image/*" style="margin-bottom:10px;"><br>
+                    Voice Note: <button onclick="recordVoice()" style="margin-right:10px;">Record Voice</button> (Simulated)
+                    <button onclick="addDiaryEntry()">Add Diary Entry</button>
+                    <div id="diaryEntries"></div>
+                </li>
+                <li>
+                    <strong>6. Focus Timer / Pomodoro Timer</strong>
+                    <span id="timerDisplay">25:00</span>
+                    <button onclick="startFocusTimer()">Start Focus</button>
+                    <button onclick="resetFocusTimer()">Reset</button>
+                </li>
+                <li>
+                    <strong>7. Motivational Tools</strong>
+                    Daily Quote: <span id="dailyQuote" class="quote-joke">"The only way to do great work is to love what you do." - Steve Jobs</span>
+                    Joke of the Day: <span id="jokeOfTheDay" class="quote-joke">Why don't scientists trust atoms? Because they make up everything!</span>
+                    <button onclick="getNewMotivation()">Get New Motivation</button>
+                </li>
+                <li>
+                    <strong>8. Call Scheduler</strong>
+                    <input type="text" id="callContact" placeholder="Contact name/number">
+                    <input type="datetime-local" id="callDateTime">
+                    <select id="callType" style="margin-bottom:10px;">
+                        <option value="Personal">Personal</option>
+                        <option value="Professional">Professional</option>
+                    </select>
+                    <button onclick="scheduleCall()">Schedule Call</button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Baby Tracker Features (for Parents) -->
+        <div id="babyFeatures" class="tab-content">
+            <h2>Baby Tracker Features (for Parents)</h2>
+            <ul>
+                <li>
+                    <strong>1. Feeding Log</strong>
+                    <select id="feedType" style="margin-bottom:10px;">
+                        <option value="Breastfeed">Breastfeed</option>
+                        <option value="Formula">Formula</option>
+                    </select>
+                    Time: <input type="time" id="feedTime">
+                    Quantity/Duration: <input type="text" id="feedAmount" placeholder="e.g., 120ml or 20min L">
+                    <button onclick="logBabyFeed()">Log Feed</button>
+                </li>
+                <li>
+                    <strong>2. Sleep Tracker</strong>
+                    <button onclick="toggleBabySleep()">
+                        <span id="babySleepButtonText">Start Sleep Cycle</span>
+                    </button>
+                    <span id="babySleepStatus">Baby is awake.</span>
+                    Last Sleep: <span id="lastBabySleep">N/A</span><br>
+                    <button onclick="setBabySleepReminder()" style="margin-top:10px;">Set Nap Reminder</button>
+                </li>
+                <li>
+                    <strong>3. Diaper Changes</strong>
+                    <select id="diaperType" style="margin-bottom:10px;">
+                        <option value="Wet">Wet</option>
+                        <option value="Poop">Poop</option>
+                        <option value="Mixed">Mixed</option>
+                    </select>
+                    Time: <input type="time" id="diaperTime">
+                    <button onclick="logDiaperChange()">Log Diaper Change</button>
+                    <p><small>Alerts for changes would require background tasks (simulated).</small></p>
+                </li>
+                <li>
+                    <strong>4. Medicine & Vaccination Reminders</strong>
+                    <input type="text" id="babyMedicineName" placeholder="Medicine/Vaccine">
+                    <input type="datetime-local" id="babyMedicineDateTime">
+                    <button onclick="setBabyMedicineReminder()">Set Reminder</button>
+                    <div id="babyMedicineHistory" style="margin-top:10px; font-size:0.9em;">History: None</div>
+                </li>
+                <li>
+                    <strong>5. Growth Milestones</strong>
+                    <input type="text" id="milestoneDescription" placeholder="e.g., First smile, Rolled over">
+                    Date: <input type="date" id="milestoneDate">
+                    <button onclick="logMilestone()">Log Milestone</button>
+                </li>
+                <li>
+                    <strong>6. Photo Diary (Baby)</strong>
+                    Photo: <input type="file" id="babyPhoto" accept="image/*" style="margin-bottom:10px;"><br>
+                    Journal: <textarea id="babyJournalText" placeholder="Baby's moment..."></textarea>
+                    <button onclick="addBabyPhotoEntry()">Add Baby Photo Entry</button>
+                    <div id="babyPhotoEntries"></div>
+                </li>
+                <li>
+                    <strong>7. Emergency Contacts & Doctor Records (No API Key)</strong>
+                    <textarea id="emergencyContacts" placeholder="Pediatrician: Dr. Smith 555-1234
+Hospital: General Hospital 555-5678
+Allergies: None known"></textarea><br>
+                    <button onclick="saveEmergencyContacts()">Save Contacts (Simulated)</button>
+                    <p><small>(Note: Data is not saved permanently, only for this session.)</small></p>
+                    <div id="doctorRecordsDisplay" style="margin-top:10px;"><strong>Doctor Records:</strong> <span id="doctorRecordsContent">No records entered.</span></div>
+                    <textarea id="doctorRecordsInput" placeholder="Last visit notes, next appointment, etc."></textarea>
+                    <button onclick="saveDoctorRecords()">Save Doctor Record (Simulated)</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+    // --- Tab Navigation ---
+    function showTab(tabName) {
+        const appContainer = document.querySelector('.app-container'); // Scope to app
+        if (!appContainer) return;
+
+        const contents = appContainer.querySelectorAll('.tab-content');
+        contents.forEach(content => content.classList.remove('active'));
+        const activeContent = appContainer.querySelector('#' + tabName + 'Features');
+        if (activeContent) activeContent.classList.add('active');
+
+        const buttons = appContainer.querySelectorAll('.tabs button');
+        buttons.forEach(button => button.classList.remove('active'));
+        const activeButton = appContainer.querySelector('#' + tabName + 'TabBtn');
+        if (activeButton) activeButton.classList.add('active');
+    }
+
+    // Helper to get element by ID safely
+    function getElem(id) {
+        return document.getElementById(id);
+    }
+
+    // --- Adult Features ---
+    function addActivity() {
+        const activityInput = getElem('activityInput');
+        const activityTimeInput = getElem('activityTime');
+        const scheduleList = getElem('scheduleList');
+        if (activityInput.value && activityTimeInput.value && scheduleList) {
+            const item = document.createElement('p');
+            item.textContent = `${activityTimeInput.value} - ${activityInput.value}`;
+            scheduleList.appendChild(item);
+            activityInput.value = '';
+            activityTimeInput.value = '';
+        } else {
+            alert('Please enter activity and time.');
+        }
+    }
+
+    function setReminder() {
+        const task = getElem('reminderTask').value;
+        const time = getElem('reminderTime').value;
+        if (task && time) {
+            alert(`Reminder set for "${task}" at ${time}. (Simulated)`);
+        } else {
+            alert('Please enter task and time for reminder.');
+        }
+    }
+    
+    function logHealth() {
+        const happiness = getElem('happinessMeter').value;
+        const moodInput = getElem('moodInput');
+        alert(`Health Logged: Happiness ${happiness}/5, Mood: ${moodInput.value || 'Not specified'}. (Simulated)`);
+        moodInput.value = '';
+    }
+
+    function logMedicine() {
+        const medicineInput = getElem('medicineName');
+        if (medicineInput.value) {
+            alert(`Medicine reminder for "${medicineInput.value}" logged. (Simulated)`);
+            medicineInput.value = '';
+        }
+    }
+    function logWater() {
+        const water = getElem('waterIntake').value;
+        alert(`${water} glasses of water logged. (Simulated)`);
+    }
+    function logSleep() {
+        const sleep = getElem('sleepHours').value;
+        alert(`${sleep} hours of sleep logged. (Simulated)`);
+    }
+
+    function logMeal() {
+        const type = getElem('mealType').value;
+        const itemInput = getElem('mealItem');
+        const quantityInput = getElem('mealQuantity');
+        const timeInput = getElem('mealTime');
+        if (itemInput.value && timeInput.value) {
+            alert(`${type} logged: ${itemInput.value} (${quantityInput.value || 'N/A'}) at ${timeInput.value}. (Simulated)`);
+            itemInput.value = '';
+            quantityInput.value = '';
+            timeInput.value = '';
+        } else {
+            alert('Please enter meal item and time.');
+        }
+    }
+
+    let diaryPhotoPreview = null;
+    const diaryPhotoInput = getElem('diaryPhoto');
+    if (diaryPhotoInput) {
+        diaryPhotoInput.addEventListener('change', function(event){
+            if (event.target.files && event.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) { diaryPhotoPreview = e.target.result; }
+                reader.readAsDataURL(event.target.files[0]);
+            } else { diaryPhotoPreview = null; }
+        });
+    }
+
+    function addDiaryEntry() {
+        const textInput = getElem('diaryText');
+        const entriesDiv = getElem('diaryEntries');
+        if ((textInput.value || diaryPhotoPreview) && entriesDiv) {
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'diary-entry';
+            if (textInput.value) {
+                const p = document.createElement('p');
+                p.textContent = textInput.value;
+                entryDiv.appendChild(p);
+            }
+            if (diaryPhotoPreview) {
+                const img = document.createElement('img');
+                img.src = diaryPhotoPreview;
+                img.alt = "Diary photo entry";
+                entryDiv.appendChild(img);
+            }
+            entriesDiv.insertBefore(entryDiv, entriesDiv.firstChild); 
+            textInput.value = '';
+            if (diaryPhotoInput) diaryPhotoInput.value = ''; 
+            diaryPhotoPreview = null;
+        } else {
+            alert('Please enter text or add a photo for your diary entry.');
+        }
+    }
+
+    function recordVoice() {
+        alert('Voice recording feature simulated. (Actual implementation needs media recorder API)');
+    }
+
+    let focusTimerInterval;
+    let focusTimeRemaining = 25 * 60; 
+    const timerDisplay = getElem('timerDisplay');
+    function startFocusTimer() {
+        clearInterval(focusTimerInterval);
+        focusTimerInterval = setInterval(() => {
+            focusTimeRemaining--;
+            const minutes = Math.floor(focusTimeRemaining / 60);
+            const seconds = focusTimeRemaining % 60;
+            if (timerDisplay) {
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            if (focusTimeRemaining <= 0) {
+                clearInterval(focusTimerInterval);
+                alert('Focus session complete!');
+                if (timerDisplay) timerDisplay.textContent = "00:00";
+            }
+        }, 1000);
+    }
+    function resetFocusTimer() {
+        clearInterval(focusTimerInterval);
+        focusTimeRemaining = 25 * 60;
+        if (timerDisplay) timerDisplay.textContent = "25:00";
+    }
+
+    const quotes = [
+        "The secret of getting ahead is getting started. - Mark Twain",
+        "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+        "The best way to predict the future is to create it. - Peter Drucker",
+        "Well done is better than well said. - Benjamin Franklin"
+    ];
+    const jokes = [
+        "Why don't skeletons fight each other? They don't have the guts.",
+        "What do you call fake spaghetti? An impasta!",
+        "Why did the bicycle fall over? Because it was two tired!",
+        "I'm reading a book on anti-gravity. It's impossible to put down!"
+    ];
+    function getNewMotivation() {
+        const dailyQuoteEl = getElem('dailyQuote');
+        const jokeOfTheDayEl = getElem('jokeOfTheDay');
+        if (dailyQuoteEl) dailyQuoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+        if (jokeOfTheDayEl) jokeOfTheDayEl.textContent = jokes[Math.floor(Math.random() * jokes.length)];
+    }
+
+    function scheduleCall() {
+        const contactInput = getElem('callContact');
+        const dateTimeInput = getElem('callDateTime');
+        const type = getElem('callType').value;
+        if (contactInput.value && dateTimeInput.value) {
+            alert(`Call scheduled with ${contactInput.value} (${type}) at ${new Date(dateTimeInput.value).toLocaleString()}. (Simulated)`);
+            contactInput.value = '';
+            dateTimeInput.value = '';
+        } else {
+            alert('Please enter contact and date/time for the call.');
+        }
+    }
+
+    // --- Baby Tracker Features ---
+    function logBabyFeed() {
+        const type = getElem('feedType').value;
+        const timeInput = getElem('feedTime');
+        const amountInput = getElem('feedAmount');
+        if (timeInput.value && amountInput.value) {
+            alert(`Baby ${type} logged: ${amountInput.value} at ${timeInput.value}. (Simulated)`);
+            timeInput.value = '';
+            amountInput.value = '';
+        } else {
+            alert('Please enter feed time and amount/duration.');
+        }
+    }
+
+    let babyIsAsleep = false;
+    let babySleepStartTime;
+    function toggleBabySleep() {
+        const statusEl = getElem('babySleepStatus');
+        const buttonTextEl = getElem('babySleepButtonText');
+        const lastSleepEl = getElem('lastBabySleep');
+        if (!statusEl || !buttonTextEl || !lastSleepEl) return;
+
+        if (babyIsAsleep) { 
+            babyIsAsleep = false;
+            statusEl.textContent = "Baby is awake.";
+            buttonTextEl.textContent = "Start Sleep Cycle";
+            const duration = Math.round((new Date() - babySleepStartTime) / (1000 * 60)); 
+            lastSleepEl.textContent = `Last sleep: ${duration} minutes, ended at ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        } else { 
+            babyIsAsleep = true;
+            babySleepStartTime = new Date();
+            statusEl.textContent = `Baby started sleeping at ${babySleepStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}.`;
+            buttonTextEl.textContent = "End Sleep Cycle";
+        }
+    }
+    function setBabySleepReminder() {
+        alert('Baby nap reminder set. (Simulated)');
+    }
+
+    function logDiaperChange() {
+        const type = getElem('diaperType').value;
+        const timeInput = getElem('diaperTime');
+        if (timeInput.value) {
+            alert(`Diaper change (${type}) logged at ${timeInput.value}. (Simulated)`);
+            timeInput.value = '';
+        } else {
+            alert('Please enter diaper change time.');
+        }
+    }
+
+    function setBabyMedicineReminder() {
+        const nameInput = getElem('babyMedicineName');
+        const dateTimeInput = getElem('babyMedicineDateTime');
+        const historyEl = getElem('babyMedicineHistory');
+        if (nameInput.value && dateTimeInput.value && historyEl) {
+            alert(`Reminder for baby's ${nameInput.value} set for ${new Date(dateTimeInput.value).toLocaleString()}. (Simulated)`);
+            historyEl.textContent = `History: Last reminder for ${nameInput.value} on ${new Date(dateTimeInput.value).toLocaleDateString()}.`;
+            nameInput.value = '';
+            dateTimeInput.value = '';
+        } else {
+            alert('Please enter medicine/vaccine name and date/time.');
+        }
+    }
+
+    function logMilestone() {
+        const descInput = getElem('milestoneDescription');
+        const dateInput = getElem('milestoneDate');
+        if (descInput.value && dateInput.value) {
+            alert(`Milestone: "${descInput.value}" logged for ${dateInput.value}. (Simulated)`);
+            descInput.value = '';
+            dateInput.value = '';
+        } else {
+            alert('Please enter milestone description and date.');
+        }
+    }
+
+    let babyPhotoFilePreview = null; 
+    const babyPhotoInput = getElem('babyPhoto');
+    if (babyPhotoInput) {
+        babyPhotoInput.addEventListener('change', function(event){
+            if (event.target.files && event.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) { babyPhotoFilePreview = e.target.result; }
+                reader.readAsDataURL(event.target.files[0]);
+            } else { babyPhotoFilePreview = null; }
+        });
+    }
+
+    function addBabyPhotoEntry() {
+        const textInput = getElem('babyJournalText');
+        const entriesDiv = getElem('babyPhotoEntries');
+         if ((textInput.value || babyPhotoFilePreview) && entriesDiv) {
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'diary-entry'; 
+            if (textInput.value) {
+                const p = document.createElement('p');
+                p.textContent = textInput.value;
+                entryDiv.appendChild(p);
+            }
+            if (babyPhotoFilePreview) {
+                const img = document.createElement('img');
+                img.src = babyPhotoFilePreview;
+                img.alt = "Baby photo entry";
+                entryDiv.appendChild(img);
+            }
+            entriesDiv.insertBefore(entryDiv, entriesDiv.firstChild);
+            textInput.value = '';
+            if (babyPhotoInput) babyPhotoInput.value = '';
+            babyPhotoFilePreview = null;
+        } else {
+            alert('Please enter journal text or add a photo for the baby entry.');
+        }
+    }
+
+    function saveEmergencyContacts() {
+        const contacts = getElem('emergencyContacts').value;
+        alert('Emergency contacts "saved" for this session. (Simulated)\n' + contacts + '\n(Data is not permanently stored in this demo.)');
+    }
+    function saveDoctorRecords() {
+        const records = getElem('doctorRecordsInput').value;
+        const contentEl = getElem('doctorRecordsContent');
+        if (contentEl) contentEl.textContent = records || "No records entered.";
+        alert('Doctor records "saved" for this session. (Simulated)\n(Data is not permanently stored in this demo.)');
+        if(getElem('doctorRecordsInput')) getElem('doctorRecordsInput').value = "";
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        showTab('adult');
+        getNewMotivation();
+        if (timerDisplay) timerDisplay.textContent = "25:00"; // Initialize timer display
+    });
+
+    </script>
+</body>
+</html>
